@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<title>Proma Sat - Локатор</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+	<link href="css/leaflet.css" rel="stylesheet" />
+	<link href="css/tabs.css" rel="stylesheet" />
+	<!--[if lte IE 8]>
+	<link href="css/leaflet.ie.css" rel="stylesheet" />
+	<![endif]-->
+	<link href="css/main.css" rel="stylesheet" />
+</head>
+<body>
+
+	<div class="container-fluid fill">
+		<div class="row-fluid fill">
+			<h4><a href="http://proma-sat.ru/">Proma Sat</a> <img src="img\location4.png"> Локатор</h4>
+			<div id="tabs_container">
+				<!-- These are the tabs -->
+				<ul class="nav nav-pills">
+					<li class="active">
+						<a href="#" rel="#tab_1_contents" class="tab">Data</a>
+					</li>
+					<li>
+						<a href="#" rel="#tab_2_contents" class="tab">Map</a>
+					</li>
+				</ul>
+
+		      	<!-- This is used so the contents don't appear to the right of the tabs -->
+		    	<div class="clear"></div>
+				<!-- This is a div that hold all the tabbed contents -->
+      			<div class="tab_contents_container">
+      				
+					
+      				<!-- Tab 1 Contents -->
+        			<div id="tab_1_contents" class="tab_contents tab_contents_active">
+        				<h6 class="text-left">Какие данные вы хотите использовать?</h6>
+          	
+						<!--Tab 1 content start -->
+						<!-- <div class="span4"> -->
+							
+							<div class="tabbable">
+								<ul class="nav nav-pills nav-stacked">
+									<li class="active"><a href="#tabSms" data-toggle="tab"><img src="img\envelop.png"> Текст СМС целиком</a></li>
+									<li><a href="#tabLbs" data-toggle="tab"><img src="img\mobile.png"> Только LBS данные из СМС</a></li>
+									<li><a href="#tabGps" data-toggle="tab"><img src="img\gps.png"> Только GPS данные из СМС</a></li>
+								</ul>
+
+								<div class="tab-content">
+									<div class="tab-pane active" id="tabSms">
+										<form>
+										<fieldset>
+											<label>Текст СМС:</label>
+											<textarea id="smsText" class="span12" placeholder="Текст вашего СМС" rows="10"></textarea>
+											<button class="btn btn-info" onclick="console.debug('%o', Navi.parseSms(smsText.value))"><img src="img\location.png"> Вычислить положение по тексту СМС</button>
+											<!-- <button class="btn btn-info" onclick="Navi.parseSms(('#smsText').val())"><img src="img\location.png"> Вычислить положение по тексту СМС</button> -->
+										</fieldset>
+										</form>
+									</div>
+									<div class="tab-pane" id="tabLbs">
+										<form>
+											<fieldset>
+												<label>Данные оператора:</label>
+												<input type="text" class="span6" placeholder="MCC"/>
+												<input type="text" class="span6" placeholder="MNC"/>
+												<label>Ячейка 1:</label>
+												<input type="text" class="span4" placeholder="LAC"/>
+												<input type="text" class="span4" placeholder="CID"/>
+												<input type="text" class="span4" placeholder="Сигнал dBm"/>
+												<label>Ячейка 2:</label>
+												<input type="text" class="span4" placeholder="LAC"/>
+												<input type="text" class="span4" placeholder="CID"/>
+												<input type="text" class="span4" placeholder="Сигнал dBm"/>
+												<label>Ячейка 3:</label>
+												<input type="text" class="span4" placeholder="LAC"/>
+												<input type="text" class="span4" placeholder="CID"/>
+												<input type="text" class="span4" placeholder="Сигнал dBm"/>
+												<label>Ячейка 4:</label>
+												<input type="text" class="span4" placeholder="LAC"/>
+												<input type="text" class="span4" placeholder="CID"/>
+												<input type="text" class="span4" placeholder="Сигнал dBm"/>
+												<button class="btn btn-info" ><img src="img\location.png"> Вычислить положение по LBS данным</button>
+											</fieldset>
+										</form>
+									</div>
+									<div class="tab-pane" id="tabGps">
+										<form>
+											<fieldset>
+												<label>Широта (Latitude):</label>
+												<select class="span3">
+													<option>N</option>
+													<option>S</option>
+													<option>+</option>
+													<option>-</option>
+												</select>
+												<input type="text" class="span9" placeholder="Широта"/>
+												<label>Долгота (Longitude):</label>
+												<select class="span3">
+													<option>E</option>
+													<option>W</option>
+													<option>+</option>
+													<option>-</option>
+												</select>
+												<input type="text" class="span9" placeholder="Долгота"/>
+												<button class="btn btn-info"><img src="img\location.png"> Вычислить положение по GPS данным</button>
+											</fieldset>
+										</form>
+									</div>
+									
+								</div>
+							<!-- </div> -->
+						</div>
+						<!--Tab 1 content end -->
+					</div>
+					<!-- Tab 2 Contents -->
+        			<div id="tab_2_contents" class="tab_contents">
+	          		
+						<!--Display map tab start-->
+						
+						<!-- <div class="container"> -->
+							<!-- <div class="row"> -->
+								<!-- <div class="span6"> -->
+									
+										<div id="map"/>
+										<div>
+											<h6 class="text-left">На какой карте показать данные?</h6>
+											<ul class="nav nav-pills">
+												<li class="active"><a href="#" data-toggle="tab" layer="Navi.Layers.OSM" onclick="Navi.switchLayer(this)">OpenStreetMap</a></li>
+												<li><a href="#" data-toggle="tab" layer="Navi.Layers.Yandex"  onclick="Navi.switchLayer(this)">Yandex</a></li>
+												<li><a href="#" data-toggle="tab" layer="Navi.Layers.Google"  onclick="Navi.switchLayer(this)">Google</a></li>
+												<li><a href="#" data-toggle="tab" layer="Navi.Layers.Bing"  onclick="Navi.switchLayer(this)">Bing</a></li>
+											</ul>
+										</div>	
+									
+								<!-- </div> -->
+								
+							<!-- </div> -->
+						<!-- </div> -->
+						<!--Display map tab end-->
+					</div>	
+				</div>	
+			</div>
+		</div>
+	</div>
+
+	<script src="js/jquery-1.10.2.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/leaflet.js"></script>
+	<script src="js/leaflet.tile.ecl.js"></script>
+	<script src="js/leaflet.tile.yandex.js"></script>
+	<script src="js/leaflet.tile.google.js"></script>
+	<script src="js/leaflet.tile.bing.js"></script>
+	<script src="js/utils.js"></script>
+	<script src="js/config.js"></script>
+	<script src="js/main.js"></script>
+</body>
+</html>
